@@ -1,9 +1,12 @@
-from ambition_form_validators import LumbarPunctureCsfFormValidator
+from django import forms
+from edc_form_validators import FormValidatorMixin
+from edc_sites.forms import SiteModelFormMixin
 
+from .form_validators import LumbarPunctureCsfFormValidator
 from .models import LumbarPunctureCsf
 
 
-class LumbarPunctureCsfForm(SubjectModelFormMixin):
+class LumbarPunctureCsfForm(SiteModelFormMixin, FormValidatorMixin, forms.ModelForm):
 
     form_validator_cls = LumbarPunctureCsfFormValidator
 

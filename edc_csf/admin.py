@@ -9,7 +9,7 @@ from .models import LumbarPunctureCsf
 
 
 @admin.register(LumbarPunctureCsf, site=edc_csf_admin)
-class LumbarPunctureCSFAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin):
+class LumbarPunctureCsfAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin):
 
     form = LumbarPunctureCsfForm
 
