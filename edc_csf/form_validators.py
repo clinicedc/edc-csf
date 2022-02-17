@@ -17,7 +17,7 @@ class LumbarPunctureCsfFormValidator(CrfRequisitionFormValidatorMixin, FormValid
 
     def clean(self):
 
-        Site = django_apps.get_model("sites.site")
+        site_model_cls = django_apps.get_model("sites.site")
 
         self.validate_opening_closing_pressure()
 
@@ -27,8 +27,7 @@ class LumbarPunctureCsfFormValidator(CrfRequisitionFormValidatorMixin, FormValid
 
         self.validate_requisition("csf_requisition", "csf_assay_datetime", csf_chemistry_panel)
 
-        self.not_required_if(
-            None,
+        self.required_if(
             field="differential_lymphocyte_count",
             field_required="differential_lymphocyte_unit",
         )
@@ -37,8 +36,7 @@ class LumbarPunctureCsfFormValidator(CrfRequisitionFormValidatorMixin, FormValid
             field="differential_lymphocyte_count", unit="differential_lymphocyte_unit"
         )
 
-        self.not_required_if(
-            None,
+        self.required_if(
             field="differential_neutrophil_count",
             field_required="differential_neutrophil_unit",
         )
@@ -67,8 +65,8 @@ class LumbarPunctureCsfFormValidator(CrfRequisitionFormValidatorMixin, FormValid
                 raise forms.ValidationError(message, code=REQUIRED_ERROR)
 
         condition = (
-            Site.objects.get_current().name == "gaborone"
-            or Site.objects.get_current().name == "blantyre"
+            site_model_cls.objects.get_current().name == "gaborone"
+            or site_model_cls.objects.get_current().name == "blantyre"
         )
         self.applicable_if_true(condition=condition, field_applicable="bios_crag")
 

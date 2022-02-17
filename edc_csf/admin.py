@@ -3,6 +3,7 @@ from edc_model_admin import SimpleHistoryAdmin, audit_fieldset_tuple
 from edc_model_admin.dashboard import ModelAdminSubjectDashboardMixin
 
 from .admin_site import edc_csf_admin
+from .fieldsets import get_csf_fieldset, get_culture_fieldset, get_lp_fieldset
 from .forms import LumbarPunctureCsfForm
 from .models import LumbarPunctureCsf
 
@@ -19,46 +20,14 @@ class LumbarPunctureCSFAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin
             None,
             {
                 "fields": (
-                    "subject_visit",
+                    "subject_identifier",
                     "report_datetime",
-                    "lp_datetime",
-                    "reason_for_lp",
-                    "opening_pressure",
-                    "closing_pressure",
-                    "csf_amount_removed",
                 )
             },
         ),
-        (
-            "Quantitative Culture",
-            {"fields": ("qc_requisition", "qc_assay_datetime", "quantitative_culture")},
-        ),
-        (
-            "CSF",
-            {
-                "fields": (
-                    "csf_requisition",
-                    "csf_assay_datetime",
-                    "csf_culture",
-                    "other_csf_culture",
-                    "csf_wbc_cell_count",
-                    "differential_lymphocyte_count",
-                    "differential_lymphocyte_unit",
-                    "differential_neutrophil_count",
-                    "differential_neutrophil_unit",
-                    "india_ink",
-                    "csf_glucose",
-                    "csf_glucose_units",
-                    "csf_protein",
-                    "csf_cr_ag",
-                    "csf_cr_ag_lfa",
-                    "bios_crag",
-                    "crag_control_result",
-                    "crag_t1_result",
-                    "crag_t2_result",
-                )
-            },
-        ),
+        get_lp_fieldset(),
+        get_culture_fieldset(),
+        get_csf_fieldset(),
         audit_fieldset_tuple,
     )
 
