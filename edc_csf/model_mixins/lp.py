@@ -36,6 +36,5 @@ class LpModelMixin(models.Model):
         help_text="Units ml",
     )
 
-
-class Meta:
-    abstract = True
+    class Meta:
+        abstract = True
