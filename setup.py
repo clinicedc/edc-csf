@@ -22,6 +22,7 @@ setup(
     include_package_data=True,
     url="https://github.com/clinicedc/edc-csf",
     license="GPL license, see LICENSE",
+    long_description_content_type="text/x-rst",
     description="Classes for CSF/LP",
     long_description=README,
     zip_safe=False,
