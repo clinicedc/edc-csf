@@ -7,6 +7,8 @@ from edc_model.models import datetime_not_future
 
 class CultureModelMixin(models.Model):
 
+    """add a requisition fields if needed, for example:
+
     qc_requisition = models.ForeignKey(
         get_requisition_model_name(),
         on_delete=PROTECT,
@@ -14,8 +16,8 @@ class CultureModelMixin(models.Model):
         verbose_name="QC Requisition",
         null=True,
         blank=True,
-        help_text="Start typing the requisition identifier or select one from this visit",
-    )
+        help_text="Start typing the requisition identifier or select one from this visit")
+    """
 
     qc_assay_datetime = models.DateTimeField(
         verbose_name="QC Result Report Date and Time",

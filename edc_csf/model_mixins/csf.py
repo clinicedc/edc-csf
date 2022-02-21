@@ -1,10 +1,8 @@
 from django.core.validators import MinValueValidator
 from django.db import models
-from django.db.models import PROTECT
 from django.utils.html import format_html
 from edc_constants.choices import POS_NEG, YES_NO_NA
 from edc_constants.constants import NOT_APPLICABLE
-from edc_lab.utils import get_requisition_model_name
 from edc_model.models import datetime_not_future
 from edc_reportable import (
     GRAMS_PER_LITER,
@@ -19,15 +17,17 @@ from ..constants import AWAITING_RESULTS
 
 class CsfModelMixin(models.Model):
 
+    """add a requisition fields if needed, for example:
+
     csf_requisition = models.ForeignKey(
-        get_requisition_model_name(),
-        on_delete=PROTECT,
-        related_name="csfrequisition",
-        verbose_name="CSF Requisition",
-        null=True,
-        blank=True,
-        help_text="Start typing the requisition identifier or select one from this visit",
-    )
+            get_requisition_model_name(),
+            on_delete=PROTECT,
+            related_name="csfrequisition",
+            verbose_name="CSF Requisition",
+            null=True,
+            blank=True,
+            help_text="Start typing the requisition identifier or select one from this visit")
+    """
 
     csf_assay_datetime = models.DateTimeField(
         verbose_name="CSF Result Report Date and Time",
