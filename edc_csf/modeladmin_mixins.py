@@ -1,30 +1,12 @@
 from django.contrib import admin
-from edc_model_admin import SimpleHistoryAdmin, audit_fieldset_tuple
-from edc_model_admin.dashboard import ModelAdminSubjectDashboardMixin
+from django_audit_fields import audit_fieldset_tuple
 
-from .admin_site import edc_csf_admin
 from .fieldsets import get_csf_fieldset, get_culture_fieldset, get_lp_fieldset
-from .forms import LpCsfForm
-from .models import LpCsf
 
 
-@admin.register(LpCsf, site=edc_csf_admin)
-class LpCsfAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin):
-
-    form = LpCsfForm
-
-    # autocomplete_fields = ["qc_requisition", "csf_requisition"]
+class LpCsfModelAdminMixin:
 
     fieldsets = (
-        (
-            None,
-            {
-                "fields": (
-                    "subject_identifier",
-                    "report_datetime",
-                )
-            },
-        ),
         get_lp_fieldset(),
         get_culture_fieldset(),
         get_csf_fieldset(),

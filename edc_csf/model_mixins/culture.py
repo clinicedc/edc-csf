@@ -31,6 +31,5 @@ class CultureModelMixin(models.Model):
         help_text="Units CFU/ml",
     )
 
-
-class Meta:
-    abstract = True
+    class Meta:
+        abstract = True

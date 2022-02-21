@@ -14,7 +14,7 @@ from .model_mixins import (
 )
 
 
-class LumbarPunctureCsf(
+class LpCsf(
     UniqueSubjectIdentifierFieldMixin,
     LpModelMixin,
     CsfModelMixin,

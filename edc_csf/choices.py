@@ -16,15 +16,16 @@ YES_NO_NOT_DONE_WAIT_RESULTS = (
     (NOT_DONE, "Not done"),
 )
 
-MM3_PERC_UNITS = ((MM3, MM3_DISPLAY), ("%", "%"))
+LP_REASON = (
+    ("scheduled_per_protocol", "Scheduled per protocol"),
+    (THERAPEUTIC_PL, "Therapeutic LP"),
+    ("clincal_deterioration", "Clinical deterioration"),
+)
 
 MG_MMOL_UNITS = (
     (MILLIGRAMS_PER_DECILITER, MILLIGRAMS_PER_DECILITER),
     (MILLIMOLES_PER_LITER, MILLIMOLES_PER_LITER_DISPLAY),
 )
 
-LP_REASON = (
-    ("scheduled_per_protocol", "Scheduled per protocol"),
-    (THERAPEUTIC_PL, "Therapeutic LP"),
-    ("clincal_deterioration", "Clinical deterioration"),
-)
+
+MM3_PERC_UNITS = ((MM3, MM3_DISPLAY), ("%", "%"))

@@ -8,7 +8,7 @@ from edc_visit_schedule.constants import DAY1
 from .panels import csf_chemistry_panel, csf_panel
 
 
-class LumbarPunctureCsfFormValidator(CrfRequisitionFormValidatorMixin, FormValidator):
+class LpCsfFormValidator(CrfRequisitionFormValidatorMixin, FormValidator):
 
     requisition_fields = [
         ("qc_requisition", "qc_assay_datetime"),
@@ -25,9 +25,14 @@ class LumbarPunctureCsfFormValidator(CrfRequisitionFormValidatorMixin, FormValid
 
         self.required_if(YES, field="csf_culture", field_required="other_csf_culture")
 
+        self.require_together(
+            field="csf_requisition",
+            field_required="csf_assay_datetime",
+        )
+
         self.validate_requisition("csf_requisition", "csf_assay_datetime", csf_chemistry_panel)
 
-        self.required_if(
+        self.require_together(
             field="differential_lymphocyte_count",
             field_required="differential_lymphocyte_unit",
         )
@@ -36,7 +41,7 @@ class LumbarPunctureCsfFormValidator(CrfRequisitionFormValidatorMixin, FormValid
             field="differential_lymphocyte_count", unit="differential_lymphocyte_unit"
         )
 
-        self.required_if(
+        self.require_together(
             field="differential_neutrophil_count",
             field_required="differential_neutrophil_unit",
         )
@@ -83,6 +88,10 @@ class LumbarPunctureCsfFormValidator(CrfRequisitionFormValidatorMixin, FormValid
             field_required="qc_requisition",
         )
 
+        self.require_together(
+            field="qc_requisition",
+            field_required="qc_assay_datetime",
+        )
         self.validate_requisition("qc_requisition", "qc_assay_datetime", csf_panel)
 
     def validate_percentage(self, field=None, unit=None):

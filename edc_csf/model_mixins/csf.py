@@ -13,11 +13,12 @@ from edc_reportable import (
     MM3_DISPLAY,
 )
 
-from edc_csf.choices import MG_MMOL_UNITS, MM3_PERC_UNITS, YES_NO_NOT_DONE_WAIT_RESULTS
-from edc_csf.constants import AWAITING_RESULTS
+from ..choices import MG_MMOL_UNITS, MM3_PERC_UNITS, YES_NO_NOT_DONE_WAIT_RESULTS
+from ..constants import AWAITING_RESULTS
 
 
 class CsfModelMixin(models.Model):
+
     csf_requisition = models.ForeignKey(
         get_requisition_model_name(),
         on_delete=PROTECT,

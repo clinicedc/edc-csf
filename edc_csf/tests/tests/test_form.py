@@ -1,54 +1,42 @@
-from ambition_labs.panels import csf_panel
-from ambition_sites import ambition_sites, fqdn
-from ambition_visit_schedule import DAY1, DAY3
-from dateutil.relativedelta import relativedelta
-from django.apps import apps as django_apps
 from django.core.exceptions import ValidationError
-from django.test import TestCase, tag
-from django.test.utils import override_settings
-from edc_constants.constants import NO, NOT_APPLICABLE, NOT_DONE, YES
-from edc_sites import add_or_update_django_sites
+from django.test import TestCase
+from edc_constants.constants import NO, NOT_DONE, YES
 from edc_utils import get_utcnow
+from edc_visit_schedule.constants import DAY1, DAY3
 
-from ..form_validators import LumbarPunctureCsfFormValidator
-from .models import (
-    Appointment,
-    LumbarPunctureCsf,
-    Panel,
-    SubjectConsent,
-    SubjectRequisition,
-    SubjectVisit,
-)
+from edc_csf_app.models import Appointment, Panel, SubjectRequisition, SubjectVisit
+
+from ...form_validators import LpCsfFormValidator
+from ...models import LpCsf
+from ...panels import csf_panel
 
 
-@tag("ambition_form_validators")
-class TestLumbarPunctureFormValidator(TestCase):
-    @classmethod
-    def setUpClass(cls):
-        add_or_update_django_sites(
-            apps=django_apps, sites=ambition_sites, fqdn=fqdn, verbose=True
-        )
-        return super().setUpClass()
-
+class TestLpFormValidator(TestCase):
     def setUp(self):
-        self.subject_consent = SubjectConsent.objects.create(
-            subject_identifier="11111111",
-            gender="M",
-            dob=(get_utcnow() - relativedelta(years=25)).date(),
-        )
+        self.subject_identifier = "1234"
         appointment = Appointment.objects.create(
-            subject_identifier=self.subject_consent.subject_identifier,
+            subject_identifier=self.subject_identifier,
             appt_datetime=get_utcnow(),
             visit_code=DAY1,
+            visit_code_sequence=0,
         )
-        self.subject_visit = SubjectVisit.objects.create(appointment=appointment)
+        self.subject_visit = SubjectVisit.objects.create(
+            appointment=appointment,
+            visit_code_sequence=0,
+            visit_code=DAY1,
+        )
 
         appointment = Appointment.objects.create(
-            subject_identifier=self.subject_consent.subject_identifier,
+            subject_identifier=self.subject_identifier,
             appt_datetime=get_utcnow(),
             visit_code=DAY3,
+            visit_code_sequence=0,
         )
-        self.subject_visit_d3 = SubjectVisit.objects.create(appointment=appointment)
+        self.subject_visit_d3 = SubjectVisit.objects.create(
+            appointment=appointment,
+            visit_code_sequence=0,
+            visit_code=DAY3,
+        )
 
     def test_pressure(self):
 
@@ -57,9 +45,7 @@ class TestLumbarPunctureFormValidator(TestCase):
             "opening_pressure": 10,
             "closing_pressure": 9,
         }
-        form_validator = LumbarPunctureCsfFormValidator(
-            cleaned_data=cleaned_data, instance=LumbarPunctureCsf()
-        )
+        form_validator = LpCsfFormValidator(cleaned_data=cleaned_data, instance=LpCsf())
         try:
             form_validator.validate()
         except ValidationError as e:
@@ -71,9 +57,7 @@ class TestLumbarPunctureFormValidator(TestCase):
             "closing_pressure": 11,
         }
 
-        form_validator = LumbarPunctureCsfFormValidator(
-            cleaned_data=cleaned_data, instance=LumbarPunctureCsf()
-        )
+        form_validator = LpCsfFormValidator(cleaned_data=cleaned_data, instance=LpCsf())
         self.assertRaises(ValidationError, form_validator.validate)
         self.assertIn("closing_pressure", form_validator._errors)
         self.assertIn("Cannot be greater", str(form_validator._errors.get("closing_pressure")))
@@ -84,9 +68,7 @@ class TestLumbarPunctureFormValidator(TestCase):
             "csf_culture": YES,
             "other_csf_culture": None,
         }
-        form_validator = LumbarPunctureCsfFormValidator(
-            cleaned_data=cleaned_data, instance=LumbarPunctureCsf()
-        )
+        form_validator = LpCsfFormValidator(cleaned_data=cleaned_data, instance=LpCsf())
         self.assertRaises(ValidationError, form_validator.validate)
         self.assertIn("other_csf_culture", form_validator._errors)
         self.assertIn("is required", str(form_validator._errors.get("other_csf_culture")))
@@ -97,9 +79,7 @@ class TestLumbarPunctureFormValidator(TestCase):
             "csf_culture": NO,
             "other_csf_culture": "blah",
         }
-        form_validator = LumbarPunctureCsfFormValidator(
-            cleaned_data=cleaned_data, instance=LumbarPunctureCsf()
-        )
+        form_validator = LpCsfFormValidator(cleaned_data=cleaned_data, instance=LpCsf())
         self.assertRaises(ValidationError, form_validator.validate)
         self.assertIn("other_csf_culture", form_validator._errors)
         self.assertIn("not required", str(form_validator._errors.get("other_csf_culture")))
@@ -110,9 +90,7 @@ class TestLumbarPunctureFormValidator(TestCase):
             "csf_culture": NOT_DONE,
             "other_csf_culture": "culture",
         }
-        form_validator = LumbarPunctureCsfFormValidator(
-            cleaned_data=cleaned_data, instance=LumbarPunctureCsf()
-        )
+        form_validator = LpCsfFormValidator(cleaned_data=cleaned_data, instance=LpCsf())
         self.assertRaises(ValidationError, form_validator.validate)
         self.assertIn("other_csf_culture", form_validator._errors)
         self.assertIn("not required", str(form_validator._errors.get("other_csf_culture")))
@@ -124,9 +102,7 @@ class TestLumbarPunctureFormValidator(TestCase):
             "qc_assay_datetime": None,
             "quantitative_culture": None,
         }
-        form_validator = LumbarPunctureCsfFormValidator(
-            cleaned_data=cleaned_data, instance=LumbarPunctureCsf()
-        )
+        form_validator = LpCsfFormValidator(cleaned_data=cleaned_data, instance=LpCsf())
         try:
             form_validator.validate()
         except ValidationError:
@@ -144,9 +120,7 @@ class TestLumbarPunctureFormValidator(TestCase):
             "qc_assay_datetime": get_utcnow(),
             "quantitative_culture": None,
         }
-        form_validator = LumbarPunctureCsfFormValidator(
-            cleaned_data=cleaned_data, instance=LumbarPunctureCsf()
-        )
+        form_validator = LpCsfFormValidator(cleaned_data=cleaned_data, instance=LpCsf())
         self.assertRaises(ValidationError, form_validator.validate)
         self.assertIn(
             "This field is not required",
@@ -165,9 +139,7 @@ class TestLumbarPunctureFormValidator(TestCase):
             "qc_assay_datetime": get_utcnow(),
             "quantitative_culture": None,
         }
-        form_validator = LumbarPunctureCsfFormValidator(
-            cleaned_data=cleaned_data, instance=LumbarPunctureCsf()
-        )
+        form_validator = LpCsfFormValidator(cleaned_data=cleaned_data, instance=LpCsf())
         self.assertRaises(ValidationError, form_validator.validate)
         self.assertIn(
             "This field is not required",
@@ -182,9 +154,7 @@ class TestLumbarPunctureFormValidator(TestCase):
             "qc_assay_datetime": None,
             "quantitative_culture": "12",
         }
-        form_validator = LumbarPunctureCsfFormValidator(
-            cleaned_data=cleaned_data, instance=LumbarPunctureCsf()
-        )
+        form_validator = LpCsfFormValidator(cleaned_data=cleaned_data, instance=LpCsf())
         self.assertRaises(ValidationError, form_validator.validate)
         self.assertIn(
             "This field is required", str(form_validator._errors.get("qc_requisition"))
@@ -203,9 +173,7 @@ class TestLumbarPunctureFormValidator(TestCase):
             "qc_assay_datetime": None,
             "quantitative_culture": "12",
         }
-        form_validator = LumbarPunctureCsfFormValidator(
-            cleaned_data=cleaned_data, instance=LumbarPunctureCsf()
-        )
+        form_validator = LpCsfFormValidator(cleaned_data=cleaned_data, instance=LpCsf())
         self.assertRaises(ValidationError, form_validator.validate)
         self.assertIn(
             "This field is required",
@@ -219,18 +187,14 @@ class TestLumbarPunctureFormValidator(TestCase):
             "csf_cr_ag": NOT_DONE,
             "india_ink": NOT_DONE,
         }
-        form_validator = LumbarPunctureCsfFormValidator(
-            cleaned_data=cleaned_data, instance=LumbarPunctureCsf()
-        )
+        form_validator = LpCsfFormValidator(cleaned_data=cleaned_data, instance=LpCsf())
         self.assertRaises(ValidationError, form_validator.validate)
         self.assertIn("csf_cr_ag", form_validator._errors)
         self.assertIn("india_ink", form_validator._errors)
 
     def test_csf_wbc_cell_count_not_required_day1(self):
         cleaned_data = {"subject_visit": self.subject_visit, "csf_wbc_cell_count": None}
-        form_validator = LumbarPunctureCsfFormValidator(
-            cleaned_data=cleaned_data, instance=LumbarPunctureCsf()
-        )
+        form_validator = LpCsfFormValidator(cleaned_data=cleaned_data, instance=LpCsf())
         try:
             form_validator.validate()
         except ValidationError:
@@ -241,9 +205,7 @@ class TestLumbarPunctureFormValidator(TestCase):
             "subject_visit": self.subject_visit_d3,
             "csf_wbc_cell_count": None,
         }
-        form_validator = LumbarPunctureCsfFormValidator(
-            cleaned_data=cleaned_data, instance=LumbarPunctureCsf()
-        )
+        form_validator = LpCsfFormValidator(cleaned_data=cleaned_data, instance=LpCsf())
         try:
             form_validator.validate()
         except ValidationError:
@@ -255,9 +217,7 @@ class TestLumbarPunctureFormValidator(TestCase):
                 "subject_visit": self.subject_visit_d3,
                 "csf_wbc_cell_count": i,
             }
-            form_validator = LumbarPunctureCsfFormValidator(
-                cleaned_data=cleaned_data, instance=LumbarPunctureCsf()
-            )
+            form_validator = LpCsfFormValidator(cleaned_data=cleaned_data, instance=LpCsf())
             try:
                 form_validator.validate()
             except ValidationError:
@@ -271,9 +231,7 @@ class TestLumbarPunctureFormValidator(TestCase):
             "csf_cr_ag": NOT_DONE,
             "csf_cr_ag_lfa": YES,
         }
-        form_validator = LumbarPunctureCsfFormValidator(
-            cleaned_data=cleaned_data, instance=LumbarPunctureCsf()
-        )
+        form_validator = LpCsfFormValidator(cleaned_data=cleaned_data, instance=LpCsf())
         self.assertRaises(ValidationError, form_validator.validate)
         self.assertIn("csf_cr_ag_lfa", form_validator._errors)
         self.assertIn("not required", str(form_validator._errors.get("csf_cr_ag_lfa")))
@@ -287,9 +245,7 @@ class TestLumbarPunctureFormValidator(TestCase):
             "differential_neutrophil_count": 125.6,
             "differential_neutrophil_unit": "%",
         }
-        form_validator = LumbarPunctureCsfFormValidator(
-            cleaned_data=cleaned_data, instance=LumbarPunctureCsf()
-        )
+        form_validator = LpCsfFormValidator(cleaned_data=cleaned_data, instance=LpCsf())
         self.assertRaises(ValidationError, form_validator.validate)
         self.assertIn("differential_neutrophil_count", form_validator._errors)
         self.assertIn(
@@ -304,58 +260,10 @@ class TestLumbarPunctureFormValidator(TestCase):
             "differential_lymphocyte_count": 125.6,
             "differential_lymphocyte_unit": "%",
         }
-        form_validator = LumbarPunctureCsfFormValidator(
-            cleaned_data=cleaned_data, instance=LumbarPunctureCsf()
-        )
+        form_validator = LpCsfFormValidator(cleaned_data=cleaned_data, instance=LpCsf())
         self.assertRaises(ValidationError, form_validator.validate)
         self.assertIn("differential_lymphocyte_count", form_validator._errors)
         self.assertIn(
             "Cannot be greater than 100%",
             str(form_validator._errors.get("differential_lymphocyte_count")),
         )
-
-    @override_settings(SITE_ID=10)
-    def test_country_specific1(self):
-        cleaned_data = {
-            "subject_visit": self.subject_visit,
-            "bios_crag": NOT_APPLICABLE,
-        }
-        form_validator = LumbarPunctureCsfFormValidator(
-            cleaned_data=cleaned_data, instance=LumbarPunctureCsf()
-        )
-        self.assertRaises(ValidationError, form_validator.validate)
-        self.assertIn("bios_crag", form_validator._errors)
-
-    @override_settings(SITE_ID=10)
-    def test_country_specific2(self):
-        cleaned_data = {"subject_visit": self.subject_visit, "bios_crag": YES}
-        form_validator = LumbarPunctureCsfFormValidator(
-            cleaned_data=cleaned_data, instance=LumbarPunctureCsf()
-        )
-        try:
-            form_validator.validate()
-        except ValidationError as e:
-            self.fail(f"ValidationError unexpectedly raised. Got {e}")
-
-    @override_settings(SITE_ID=20)
-    def test_country_specific3(self):
-        cleaned_data = {"subject_visit": self.subject_visit, "bios_crag": YES}
-        form_validator = LumbarPunctureCsfFormValidator(
-            cleaned_data=cleaned_data, instance=LumbarPunctureCsf()
-        )
-        self.assertRaises(ValidationError, form_validator.validate)
-        self.assertIn("bios_crag", form_validator._errors)
-
-    @override_settings(SITE_ID=20)
-    def test_country_specific4(self):
-        cleaned_data = {
-            "subject_visit": self.subject_visit,
-            "bios_crag": NOT_APPLICABLE,
-        }
-        form_validator = LumbarPunctureCsfFormValidator(
-            cleaned_data=cleaned_data, instance=LumbarPunctureCsf()
-        )
-        try:
-            form_validator.validate()
-        except ValidationError as e:
-            self.fail(f"ValidationError unexpectedly raised. Got {e}")
