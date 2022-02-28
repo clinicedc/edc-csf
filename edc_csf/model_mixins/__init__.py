@@ -1,4 +1,5 @@
 from .biosynex_semi_quantitative_crag_mixin import BiosynexSemiQuantitativeCragMixin
 from .csf import CsfModelMixin
-from .culture import CultureModelMixin
+from .csf_culture import CsfCultureModelMixin
 from .lp import LpModelMixin
+from .quantitative_culture import QuantitativeCultureModelMixin

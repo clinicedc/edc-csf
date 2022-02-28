@@ -1,15 +1,19 @@
 from django.contrib import admin
 from django_audit_fields import audit_fieldset_tuple
 
-from .fieldsets import get_csf_fieldset, get_culture_fieldset, get_lp_fieldset
+from .fieldsets import (
+    get_csf_culture_fieldset,
+    get_lp_fieldset,
+    get_quantitative_culture_fieldset,
+)
 
 
 class LpCsfModelAdminMixin:
 
     fieldsets = (
         get_lp_fieldset(),
-        get_culture_fieldset(),
-        get_csf_fieldset(),
+        get_csf_culture_fieldset(),
+        get_quantitative_culture_fieldset(),
         audit_fieldset_tuple,
     )
 
@@ -17,8 +21,8 @@ class LpCsfModelAdminMixin:
         "reason_for_lp": admin.VERTICAL,
         "csf_culture": admin.VERTICAL,
         "india_ink": admin.VERTICAL,
-        "csf_cr_ag": admin.VERTICAL,
-        "csf_cr_ag_lfa": admin.VERTICAL,
+        "csf_crag": admin.VERTICAL,
+        "csf_crag_lfa": admin.VERTICAL,
         "differential_lymphocyte_unit": admin.VERTICAL,
         "differential_neutrophil_unit": admin.VERTICAL,
         "csf_glucose_units": admin.VERTICAL,

@@ -1,11 +1,9 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-from django.db.models import PROTECT
-from edc_lab.utils import get_requisition_model_name
 from edc_model.models import datetime_not_future
 
 
-class CultureModelMixin(models.Model):
+class QuantitativeCultureModelMixin(models.Model):
 
     """add a requisition fields if needed, for example:
 

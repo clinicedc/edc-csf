@@ -1,4 +1,3 @@
-from edc_constants.constants import NO, NOT_DONE, YES
 from edc_reportable import (
     MILLIGRAMS_PER_DECILITER,
     MILLIMOLES_PER_LITER,
@@ -7,14 +6,7 @@ from edc_reportable import (
     MM3_DISPLAY,
 )
 
-from .constants import AWAITING_RESULTS, THERAPEUTIC_PL
-
-YES_NO_NOT_DONE_WAIT_RESULTS = (
-    (YES, YES),
-    (NO, NO),
-    (AWAITING_RESULTS, "Awaiting results"),
-    (NOT_DONE, "Not done"),
-)
+from .constants import THERAPEUTIC_PL
 
 LP_REASON = (
     ("scheduled_per_protocol", "Scheduled per protocol"),
