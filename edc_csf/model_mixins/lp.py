@@ -1,9 +1,10 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.html import format_html
+from edc_constants.choices import YES_NO
 from edc_model.models import datetime_not_future
 
-from edc_csf.choices import LP_REASON
+from ..choices import LP_REASON
 
 
 class LpModelMixin(models.Model):
@@ -16,8 +17,14 @@ class LpModelMixin(models.Model):
         verbose_name="Reason for LP", max_length=50, choices=LP_REASON
     )
 
+    opening_pressure_measured = models.CharField(
+        verbose_name="Was the opening pressure measured", max_length=25, choices=YES_NO
+    )
+
     opening_pressure = models.IntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(99)],
+        blank=True,
+        null=True,
         help_text=format_html("Units cm of H<sub>2</sub>O"),
     )
 

@@ -184,12 +184,12 @@ class TestLpFormValidator(TestCase):
         """Assert that either csf_cr_ag or india_ink is done."""
         cleaned_data = {
             "subject_visit": self.subject_visit,
-            "csf_cr_ag": NOT_DONE,
+            "csf_crag": NOT_DONE,
             "india_ink": NOT_DONE,
         }
         form_validator = LpCsfFormValidator(cleaned_data=cleaned_data, instance=LpCsf())
         self.assertRaises(ValidationError, form_validator.validate)
-        self.assertIn("csf_cr_ag", form_validator._errors)
+        self.assertIn("csf_crag", form_validator._errors)
         self.assertIn("india_ink", form_validator._errors)
 
     def test_csf_wbc_cell_count_not_required_day1(self):
@@ -225,16 +225,16 @@ class TestLpFormValidator(TestCase):
                     f"ValidationError unexpectedly raised. " f"Got {form_validator._errors}"
                 )
 
-    def test_csf_cr_ag_no_csf_cr_ag_lfa_not_required(self):
+    def test_csf_crag_no_csf_crag_lfa_not_required(self):
         cleaned_data = {
             "subject_visit": self.subject_visit,
-            "csf_cr_ag": NOT_DONE,
-            "csf_cr_ag_lfa": YES,
+            "csf_crag": NOT_DONE,
+            "csf_crag_lfa": YES,
         }
         form_validator = LpCsfFormValidator(cleaned_data=cleaned_data, instance=LpCsf())
         self.assertRaises(ValidationError, form_validator.validate)
-        self.assertIn("csf_cr_ag_lfa", form_validator._errors)
-        self.assertIn("not required", str(form_validator._errors.get("csf_cr_ag_lfa")))
+        self.assertIn("csf_crag_lfa", form_validator._errors)
+        self.assertIn("not required", str(form_validator._errors.get("csf_crag_lfa")))
 
     def test_differential_neutrophil_count_percent_limit_passed(self):
         cleaned_data = {

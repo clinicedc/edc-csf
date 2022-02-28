@@ -8,9 +8,10 @@ from edc_visit_tracking.managers import CrfModelManager
 
 from .model_mixins import (
     BiosynexSemiQuantitativeCragMixin,
+    CsfCultureModelMixin,
     CsfModelMixin,
-    CultureModelMixin,
     LpModelMixin,
+    QuantitativeCultureModelMixin,
 )
 
 
@@ -18,8 +19,9 @@ class LpCsf(
     UniqueSubjectIdentifierFieldMixin,
     LpModelMixin,
     CsfModelMixin,
+    CsfCultureModelMixin,
     BiosynexSemiQuantitativeCragMixin,
-    CultureModelMixin,
+    QuantitativeCultureModelMixin,
     SiteModelMixin,
     edc_models.BaseUuidModel,
 ):
