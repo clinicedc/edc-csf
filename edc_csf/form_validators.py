@@ -1,5 +1,6 @@
+from typing import Any
+
 from django import forms
-from django.apps import apps as django_apps
 from edc_constants.constants import NOT_DONE, YES
 from edc_form_validators import REQUIRED_ERROR, FormValidator
 from edc_lab import CrfRequisitionFormValidatorMixin
@@ -15,7 +16,7 @@ def validate_percentage(cleaned_data: dict, field: str, unit: str):
 
 
 class LpFormValidatorMixin:
-    def validate_lp(self: FormValidator):
+    def validate_lp(self: Any):
         self.required_if(
             YES, field="opening_pressure_measured", field_required="opening_pressure"
         )
@@ -31,7 +32,7 @@ class LpFormValidatorMixin:
 
 
 class CsfCultureFormValidatorMixin:
-    def validate_csf_culture(self: FormValidator):
+    def validate_csf_culture(self: Any):
         self.required_if(YES, field="csf_culture", field_required="other_csf_culture")
 
         self.require_together(
@@ -84,7 +85,7 @@ class CsfCultureFormValidatorMixin:
 
 
 class QuantitativeCsfFormValidatorMixin:
-    def validate_quantitative_culture(self: FormValidator, requisition: str):
+    def validate_quantitative_culture(self: Any, requisition: str):
         self.require_together(
             field=requisition,
             field_required="qc_assay_datetime",
@@ -97,7 +98,7 @@ class QuantitativeCsfFormValidatorMixin:
 
 
 class BiosynexSemiQuantitativeCragMixinFormValidatorMixin:
-    def validate_biosynex_semi_quantitative_crag(self: FormValidator):
+    def validate_biosynex_semi_quantitative_crag(self: Any):
         self.applicable_if(YES, field="bios_crag", field_applicable="crag_control_result")
 
         self.applicable_if(YES, field="bios_crag", field_applicable="crag_t1_result")
@@ -105,11 +106,10 @@ class BiosynexSemiQuantitativeCragMixinFormValidatorMixin:
         self.applicable_if(YES, field="bios_crag", field_applicable="crag_t2_result")
 
 
-class LpCsfFormValidator(
+class LpCsfFormValidatorMixin(
     CrfRequisitionFormValidatorMixin,
     LpFormValidatorMixin,
     QuantitativeCsfFormValidatorMixin,
-    FormValidator,
 ):
 
     requisition_fields = [
@@ -122,3 +122,8 @@ class LpCsfFormValidator(
         self.validate_lp()
 
         self.validate_quantitative_culture("qc_requisition")
+
+
+class LpCsfFormValidator(LpCsfFormValidatorMixin, FormValidator):
+
+    pass
