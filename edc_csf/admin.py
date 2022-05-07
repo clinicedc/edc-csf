@@ -18,8 +18,6 @@ class LpCsfAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin):
 
     form = LpCsfForm
 
-    # autocomplete_fields = ["qc_requisition", "csf_requisition"]
-
     fieldsets = (
         (
             None,
