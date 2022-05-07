@@ -1,3 +1,4 @@
+from edc_constants.disease_constants import THERAPEUTIC_PL
 from edc_reportable import (
     MILLIGRAMS_PER_DECILITER,
     MILLIMOLES_PER_LITER,
@@ -5,8 +6,6 @@ from edc_reportable import (
     MM3,
     MM3_DISPLAY,
 )
-
-from .constants import THERAPEUTIC_PL
 
 LP_REASON = (
     ("scheduled_per_protocol", "Scheduled per protocol"),

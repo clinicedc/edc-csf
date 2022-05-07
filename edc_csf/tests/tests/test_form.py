@@ -228,7 +228,7 @@ class TestLpFormValidator(TestCase):
     def test_csf_crag_no_csf_crag_lfa_not_required(self):
         cleaned_data = {
             "subject_visit": self.subject_visit,
-            "csf_crag": NOT_DONE,
+            "csf_positive": NOT_DONE,
             "csf_crag_lfa": YES,
         }
         form_validator = LpCsfFormValidator(cleaned_data=cleaned_data, instance=LpCsf())
