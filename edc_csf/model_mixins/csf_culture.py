@@ -7,7 +7,7 @@ from edc_constants.choices import (
     YES_NO_NOT_DONE_AWAITING_RESULTS_NA,
 )
 from edc_constants.constants import AWAITING_RESULTS, NOT_APPLICABLE
-from edc_model.models import datetime_not_future
+from edc_model.validators import datetime_not_future
 from edc_reportable import (
     GRAMS_PER_LITER,
     MILLIGRAMS_PER_DECILITER,

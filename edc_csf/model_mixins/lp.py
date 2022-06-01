@@ -2,7 +2,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.html import format_html
 from edc_constants.choices import YES_NO
-from edc_model.models import datetime_not_future
+from edc_model.validators import datetime_not_future
 
 from ..choices import LP_REASON
 
