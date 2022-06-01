@@ -1,6 +1,6 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-from edc_model.models import datetime_not_future
+from edc_model.validators import datetime_not_future
 
 
 class QuantitativeCultureModelMixin(models.Model):
