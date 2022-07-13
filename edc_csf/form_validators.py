@@ -110,6 +110,7 @@ class LpCsfFormValidatorMixin(
     CrfRequisitionFormValidatorMixin,
     LpFormValidatorMixin,
     QuantitativeCsfFormValidatorMixin,
+    CsfCultureFormValidatorMixin,
 ):
 
     requisition_fields = [
@@ -122,6 +123,8 @@ class LpCsfFormValidatorMixin(
         self.validate_lp()
 
         self.validate_quantitative_culture("qc_requisition")
+
+        self.validate_csf_culture()
 
 
 class LpCsfFormValidator(LpCsfFormValidatorMixin, FormValidator):
