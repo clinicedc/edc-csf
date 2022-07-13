@@ -225,10 +225,10 @@ class TestLpFormValidator(TestCase):
                     f"ValidationError unexpectedly raised. " f"Got {form_validator._errors}"
                 )
 
-    def test_csf_crag_no_csf_crag_lfa_not_required(self):
+    def test_csf_crag_not_done_csf_crag_lfa_not_required(self):
         cleaned_data = {
             "subject_visit": self.subject_visit,
-            "csf_positive": NOT_DONE,
+            "csf_crag": NOT_DONE,
             "csf_crag_lfa": YES,
         }
         form_validator = LpCsfFormValidator(cleaned_data=cleaned_data, instance=LpCsf())
