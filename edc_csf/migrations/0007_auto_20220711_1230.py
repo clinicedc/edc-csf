@@ -6,17 +6,22 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('edc_csf', '0006_auto_20220228_2032'),
+        ("edc_csf", "0006_auto_20220228_2032"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='historicallpcsf',
-            options={'get_latest_by': ('history_date', 'history_id'), 'ordering': ('-history_date', '-history_id'), 'verbose_name': 'historical Lumbar Puncture/Cerebrospinal Fluid', 'verbose_name_plural': 'historical Lumbar Puncture/Cerebrospinal Fluid'},
+            name="historicallpcsf",
+            options={
+                "get_latest_by": ("history_date", "history_id"),
+                "ordering": ("-history_date", "-history_id"),
+                "verbose_name": "historical Lumbar Puncture/Cerebrospinal Fluid",
+                "verbose_name_plural": "historical Lumbar Puncture/Cerebrospinal Fluid",
+            },
         ),
         migrations.AlterField(
-            model_name='historicallpcsf',
-            name='history_date',
+            model_name="historicallpcsf",
+            name="history_date",
             field=models.DateTimeField(db_index=True),
         ),
     ]
