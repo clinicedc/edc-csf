@@ -6,20 +6,30 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('edc_csf', '0001_initial'),
+        ("edc_csf", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='historicallpcsf',
-            name='opening_pressure_measured',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No')], default='Yes', max_length=25, verbose_name='Was the opening pressure measured'),
+            model_name="historicallpcsf",
+            name="opening_pressure_measured",
+            field=models.CharField(
+                choices=[("Yes", "Yes"), ("No", "No")],
+                default="Yes",
+                max_length=25,
+                verbose_name="Was the opening pressure measured",
+            ),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='lpcsf',
-            name='opening_pressure_measured',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No')], default='Yes', max_length=25, verbose_name='Was the opening pressure measured'),
+            model_name="lpcsf",
+            name="opening_pressure_measured",
+            field=models.CharField(
+                choices=[("Yes", "Yes"), ("No", "No")],
+                default="Yes",
+                max_length=25,
+                verbose_name="Was the opening pressure measured",
+            ),
             preserve_default=False,
         ),
     ]
