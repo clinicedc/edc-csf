@@ -38,7 +38,7 @@ class LpModelMixin(models.Model):
     csf_amount_removed = models.IntegerField(
         blank=True,
         null=True,
-        verbose_name="CSF amount removed ",
+        verbose_name="CSF amount removed",
         validators=[MinValueValidator(1)],
         help_text="Units ml",
     )
