@@ -112,14 +112,12 @@ class LpCsfFormValidatorMixin(
     QuantitativeCsfFormValidatorMixin,
     CsfCultureFormValidatorMixin,
 ):
-
     requisition_fields = [
         ("qc_requisition", "qc_assay_datetime"),
         ("csf_requisition", "csf_assay_datetime"),
     ]
 
     def clean(self):
-
         self.validate_lp()
 
         self.validate_quantitative_culture("qc_requisition")
@@ -128,5 +126,4 @@ class LpCsfFormValidatorMixin(
 
 
 class LpCsfFormValidator(LpCsfFormValidatorMixin, FormValidator):
-
     pass

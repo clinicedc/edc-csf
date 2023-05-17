@@ -10,7 +10,6 @@ from edc_constants.constants import AWAITING_RESULTS, NOT_APPLICABLE
 
 
 class CsfModelMixin(models.Model):
-
     csf_positive = models.CharField(
         verbose_name="CSF positive for cryptococcal meningitis?",
         max_length=18,

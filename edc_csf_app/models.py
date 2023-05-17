@@ -10,7 +10,6 @@ from edc_visit_schedule.model_mixins import VisitCodeFieldsModelMixin
 class Appointment(
     NonUniqueSubjectIdentifierFieldMixin, VisitCodeFieldsModelMixin, BaseUuidModel
 ):
-
     appt_datetime = models.DateTimeField(default=get_utcnow)
 
     class Meta(BaseUuidModel.Meta):
@@ -20,7 +19,6 @@ class Appointment(
 class SubjectVisit(
     NonUniqueSubjectIdentifierFieldMixin, VisitCodeFieldsModelMixin, BaseUuidModel
 ):
-
     appointment = models.ForeignKey(Appointment, on_delete=models.PROTECT, related_name="+")
 
     class Meta(BaseUuidModel.Meta):
@@ -30,7 +28,6 @@ class SubjectVisit(
 class SubjectRequisition(
     NonUniqueSubjectIdentifierFieldMixin, VisitCodeFieldsModelMixin, BaseUuidModel
 ):
-
     subject_visit = models.ForeignKey(SubjectVisit, on_delete=models.PROTECT, related_name="+")
 
     panel = models.ForeignKey(Panel, on_delete=PROTECT)

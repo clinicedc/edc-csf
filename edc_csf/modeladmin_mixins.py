@@ -9,7 +9,6 @@ from .fieldsets import (
 
 
 class LpCsfModelAdminMixin:
-
     fieldsets = (
         get_lp_fieldset(),
         get_csf_culture_fieldset(),
