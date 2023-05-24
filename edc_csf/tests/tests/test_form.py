@@ -39,7 +39,6 @@ class TestLpFormValidator(TestCase):
         )
 
     def test_pressure(self):
-
         cleaned_data = {
             "subject_visit": self.subject_visit,
             "opening_pressure": 10,

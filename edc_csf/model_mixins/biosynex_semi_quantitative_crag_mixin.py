@@ -3,7 +3,6 @@ from edc_constants.choices import NOT_APPLICABLE, POS_NEG_NA, YES_NO_NA
 
 
 class BiosynexSemiQuantitativeCragMixin(models.Model):
-
     bios_crag = models.CharField(
         verbose_name="Biosynex Semi-quantitative CrAg performed?",
         choices=YES_NO_NA,

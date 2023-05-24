@@ -16,7 +16,6 @@ from .models import LpCsf
 
 @admin.register(LpCsf, site=edc_csf_admin)
 class LpCsfAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin):
-
     form = LpCsfForm
 
     fieldsets = (

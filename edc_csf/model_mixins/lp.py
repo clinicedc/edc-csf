@@ -8,7 +8,6 @@ from ..choices import LP_REASON
 
 
 class LpModelMixin(models.Model):
-
     lp_datetime = models.DateTimeField(
         verbose_name="LP Date and Time", validators=[datetime_not_future]
     )

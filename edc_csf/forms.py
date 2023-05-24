@@ -7,7 +7,6 @@ from .models import LpCsf
 
 
 class LpCsfForm(SiteModelFormMixin, FormValidatorMixin, forms.ModelForm):
-
     form_validator_cls = LpCsfFormValidator
 
     class Meta:
