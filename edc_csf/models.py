@@ -26,9 +26,9 @@ class LpCsf(
 ):
     report_datetime = models.DateTimeField(default=get_utcnow)
 
-    on_site = CurrentSiteManager()
-
     objects = CrfModelManager()
+
+    on_site = CurrentSiteManager()
 
     history = HistoricalRecords()
 
