@@ -1,41 +1,66 @@
+from decimal import Decimal
+
 from django.core.exceptions import ValidationError
 from django.test import TestCase
+from edc_appointment.models import Appointment
 from edc_constants.constants import NO, NOT_DONE, YES
+from edc_reference import site_reference_configs
 from edc_utils import get_utcnow
-from edc_visit_schedule.constants import DAY1, DAY3
+from edc_visit_schedule import site_visit_schedules
+from edc_visit_tracking.constants import SCHEDULED
+from visit_schedule_app.models import SubjectVisit
+from visit_schedule_app.visit_schedule import visit_schedule
 
-from edc_csf_app.models import Appointment, Panel, SubjectRequisition, SubjectVisit
-
-from ...form_validators import LpCsfFormValidator
-from ...models import LpCsf
-from ...panels import csf_panel
+from edc_csf.form_validators import LpCsfFormValidator
+from edc_csf.models import LpCsf
+from edc_csf.panels import csf_panel
+from edc_csf_app.models import Panel, SubjectRequisition
 
 
 class TestLpFormValidator(TestCase):
     def setUp(self):
+        site_visit_schedules._registry = {}
+        site_visit_schedules.register(visit_schedule)
+        site_reference_configs.register_from_visit_schedule(
+            visit_models={"edc_appointment.appointment": "edc_visit_tracking.subjectvisit"}
+        )
         self.subject_identifier = "1234"
         appointment = Appointment.objects.create(
             subject_identifier=self.subject_identifier,
             appt_datetime=get_utcnow(),
-            visit_code=DAY1,
+            visit_code="1000",
             visit_code_sequence=0,
+            visit_schedule_name="visit_schedule",
+            schedule_name="schedule",
+            timepoint=Decimal("1.0"),
         )
         self.subject_visit = SubjectVisit.objects.create(
             appointment=appointment,
+            report_datetime=appointment.appt_datetime,
             visit_code_sequence=0,
-            visit_code=DAY1,
+            visit_code="1000",
+            reason=SCHEDULED,
+            visit_schedule_name="visit_schedule",
+            schedule_name="schedule",
         )
 
         appointment = Appointment.objects.create(
             subject_identifier=self.subject_identifier,
             appt_datetime=get_utcnow(),
-            visit_code=DAY3,
+            visit_code="3000",
             visit_code_sequence=0,
+            visit_schedule_name="visit_schedule",
+            schedule_name="schedule",
+            timepoint=Decimal("1.0"),
         )
         self.subject_visit_d3 = SubjectVisit.objects.create(
             appointment=appointment,
+            report_datetime=appointment.appt_datetime,
             visit_code_sequence=0,
-            visit_code=DAY3,
+            visit_code="3000",
+            reason=SCHEDULED,
+            visit_schedule_name="visit_schedule",
+            schedule_name="schedule",
         )
 
     def test_pressure(self):
