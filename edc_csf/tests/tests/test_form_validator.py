@@ -6,7 +6,7 @@ from edc_appointment.models import Appointment
 from edc_constants.constants import NO, NOT_DONE, YES
 from edc_reference import site_reference_configs
 from edc_utils import get_utcnow
-from edc_visit_schedule import site_visit_schedules
+from edc_visit_schedule.site_visit_schedules import site_visit_schedules
 from edc_visit_tracking.constants import SCHEDULED
 from visit_schedule_app.models import SubjectVisit
 from visit_schedule_app.visit_schedule import visit_schedule
