@@ -1,7 +1,7 @@
 from decimal import Decimal
 
 from django.core.exceptions import ValidationError
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from edc_appointment.models import Appointment
 from edc_constants.constants import NO, NOT_DONE, YES
 from edc_utils import get_utcnow
@@ -16,6 +16,7 @@ from edc_csf.panels import csf_panel
 from edc_csf_app.models import Panel, SubjectRequisition
 
 
+@override_settings(SITE_ID=20)
 class TestLpFormValidator(TestCase):
     def setUp(self):
         site_visit_schedules._registry = {}
