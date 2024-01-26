@@ -14,6 +14,7 @@ project_settings = DefaultTestSettings(
     BASE_DIR=base_dir,
     APP_NAME=app_name,
     ETC_DIR=os.path.join(base_dir, app_name, "tests", "etc"),
+    EDC_SITES_REGISTER_DEFAULT=True,
     SUBJECT_VISIT_MODEL="edc_visit_tracking.subjectvisit",
     SUBJECT_VISIT_MISSED_MODEL="edc_appointment.subjectvisitmissed",
     SUBJECT_REQUISITION_MODEL="edc_csf_app.subjectrequisition",
