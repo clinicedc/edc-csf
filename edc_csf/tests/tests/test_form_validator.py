@@ -16,7 +16,7 @@ from edc_csf.panels import csf_panel
 from edc_csf_app.models import Panel, SubjectRequisition
 
 
-@override_settings(SITE_ID=20)
+@override_settings(SITE_ID=1)
 class TestLpFormValidator(TestCase):
     def setUp(self):
         site_visit_schedules._registry = {}
