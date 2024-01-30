@@ -19,8 +19,7 @@ from ..choices import MG_MMOL_UNITS, MM3_PERC_UNITS
 
 
 class CsfCultureModelMixin(models.Model):
-
-    """add a requisition fields if needed, for example:
+    """Add requisition fields if needed, for example:
 
     csf_requisition = models.ForeignKey(
         get_requisition_model_name(),
