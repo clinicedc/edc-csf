@@ -14,4 +14,3 @@ edc_csf
 
 .. |downloads| image:: https://pepy.tech/badge/edc-csf
    :target: https://pepy.tech/project/edc-csf
-
