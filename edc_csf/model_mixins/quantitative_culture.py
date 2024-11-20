@@ -4,8 +4,7 @@ from edc_model.validators import datetime_not_future
 
 
 class QuantitativeCultureModelMixin(models.Model):
-
-    """add a requisition fields if needed, for example:
+    """Add requisition fields if needed, for example:
 
     qc_requisition = models.ForeignKey(
         get_requisition_model_name(),
