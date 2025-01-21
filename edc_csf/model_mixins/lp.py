@@ -24,14 +24,14 @@ class LpModelMixin(models.Model):
         validators=[MinValueValidator(1), MaxValueValidator(99)],
         blank=True,
         null=True,
-        help_text=format_html("Units cm of H<sub>2</sub>O"),
+        help_text=format_html("Units cm of H<sub>{}</sub>O", "2"),
     )
 
     closing_pressure = models.IntegerField(
         blank=True,
         null=True,
         validators=[MinValueValidator(0), MaxValueValidator(99)],
-        help_text=format_html("Units cm of H<sub>2</sub>O"),
+        help_text=format_html("Units cm of H<sub>{}</sub>O", "2"),
     )
 
     csf_amount_removed = models.IntegerField(

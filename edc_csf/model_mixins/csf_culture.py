@@ -1,6 +1,5 @@
 from django.core.validators import MinValueValidator
 from django.db import models
-from django.utils.html import format_html
 from edc_constants.choices import (
     POS_NEG,
     YES_NO_NA,
@@ -52,7 +51,7 @@ class CsfCultureModelMixin(models.Model):
 
     csf_wbc_cell_count = models.IntegerField(
         verbose_name="Total CSF WBC cell count:",
-        help_text=format_html(f"acceptable units are {MM3_DISPLAY}"),
+        help_text=f"acceptable units are {MM3_DISPLAY}",
         validators=[MinValueValidator(0)],
         null=True,
         blank=True,
@@ -63,7 +62,7 @@ class CsfCultureModelMixin(models.Model):
         validators=[MinValueValidator(0)],
         blank=True,
         null=True,
-        help_text=format_html(f"acceptable units are {MM3_DISPLAY} or %"),
+        help_text=f"acceptable units are {MM3_DISPLAY} or %",
     )
 
     differential_lymphocyte_unit = models.CharField(
@@ -75,7 +74,7 @@ class CsfCultureModelMixin(models.Model):
         validators=[MinValueValidator(0)],
         blank=True,
         null=True,
-        help_text=format_html(f"acceptable units are {MM3_DISPLAY} or %"),
+        help_text=f"acceptable units are {MM3_DISPLAY} or %",
     )
 
     differential_neutrophil_unit = models.CharField(
