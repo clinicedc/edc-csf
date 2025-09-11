@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from edc_test_settings.func_main import func_main2
+from clinicedc_tests.config import func_main
 
 if __name__ == "__main__":
-    func_main2("edc_csf.tests.test_settings", "edc_csf.tests")
+    func_main("tests.test_settings", "tests")

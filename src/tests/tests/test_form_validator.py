@@ -1,63 +1,83 @@
-from decimal import Decimal
-
+from clinicedc_tests.consents import consent_v1
+from clinicedc_tests.helper import Helper
+from clinicedc_tests.labs import lab_profile
+from clinicedc_tests.models import SubjectRequisition
+from clinicedc_tests.sites import all_sites
+from clinicedc_tests.visit_schedules.visit_schedule import get_visit_schedule
 from django.core.exceptions import ValidationError
-from django.test import TestCase, override_settings
+from django.test import TestCase, override_settings, tag
 from edc_appointment.models import Appointment
+from edc_consent import site_consents
 from edc_constants.constants import NO, NOT_DONE, YES
+from edc_facility.import_holidays import import_holidays
+from edc_lab import site_labs
+from edc_lab.models import Panel
+from edc_lab_panel.panels import fbc_panel, lft_panel, rft_panel, vl_panel
+from edc_sites.site import sites as site_sites
+from edc_sites.utils import add_or_update_django_sites
 from edc_utils import get_utcnow
+from edc_visit_schedule.constants import DAY01
 from edc_visit_schedule.site_visit_schedules import site_visit_schedules
+from edc_visit_schedule.visit import Requisition, RequisitionCollection
 from edc_visit_tracking.constants import SCHEDULED
-from visit_schedule_app.models import SubjectVisit
-from visit_schedule_app.visit_schedule import visit_schedule
+from edc_visit_tracking.models import SubjectVisit
 
 from edc_csf.form_validators import LpCsfFormValidator
 from edc_csf.models import LpCsf
 from edc_csf.panels import csf_panel
-from edc_csf_app.models import Panel, SubjectRequisition
 
 
-@override_settings(SITE_ID=1)
+@override_settings(SITE_ID=10)
 class TestLpFormValidator(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        import_holidays()
+        site_sites._registry = {}
+        site_sites.loaded = False
+        site_sites.register(*all_sites)
+        add_or_update_django_sites()
+        site_labs.initialize()
+        # add csf_panel to lab_profile
+        lab_profile.add_panel(csf_panel)
+        site_labs.register(lab_profile=lab_profile)
+
     def setUp(self):
+        site_consents.registry = {}
+        site_consents.register(consent_v1)
         site_visit_schedules._registry = {}
-        site_visit_schedules.register(visit_schedule)
-        self.subject_identifier = "1234"
-        appointment = Appointment.objects.create(
-            subject_identifier=self.subject_identifier,
-            appt_datetime=get_utcnow(),
-            visit_code="1000",
-            visit_code_sequence=0,
-            visit_schedule_name="visit_schedule",
-            schedule_name="schedule",
-            timepoint=Decimal("1.0"),
+        # add csf_panel to visit schedule requisitions
+        requisitions = RequisitionCollection(
+            Requisition(show_order=30, panel=fbc_panel, required=True, additional=False),
+            Requisition(show_order=40, panel=lft_panel, required=True, additional=False),
+            Requisition(show_order=50, panel=rft_panel, required=True, additional=False),
+            Requisition(show_order=60, panel=vl_panel, required=True, additional=False),
+            Requisition(show_order=70, panel=csf_panel, required=True, additional=False),
         )
-        self.subject_visit = SubjectVisit.objects.create(
-            appointment=appointment,
-            report_datetime=appointment.appt_datetime,
-            visit_code_sequence=0,
-            visit_code="1000",
-            reason=SCHEDULED,
-            visit_schedule_name="visit_schedule",
-            schedule_name="schedule",
+        visit_schedule = get_visit_schedule(
+            consent_v1, visit_count=4, requisitions=requisitions
+        )
+        site_visit_schedules.register(visit_schedule)
+
+        helper = Helper()
+        self.subject_visit = helper.enroll_to_baseline(
+            visit_schedule_name=visit_schedule.name, schedule_name="schedule"
         )
 
-        appointment = Appointment.objects.create(
-            subject_identifier=self.subject_identifier,
-            appt_datetime=get_utcnow(),
+        self.subject_identifier = self.subject_visit.appointment.subject_identifier
+        for appointment in Appointment.objects.exclude(visit_code=DAY01):
+            SubjectVisit.objects.create(
+                appointment=appointment,
+                report_datetime=appointment.appt_datetime,
+                visit_code_sequence=0,
+                visit_code=appointment.visit_code,
+                reason=SCHEDULED,
+                visit_schedule_name="visit_schedule",
+                schedule_name="schedule",
+            )
+
+        self.subject_visit_d3 = SubjectVisit.objects.get(
             visit_code="3000",
-            visit_code_sequence=0,
-            visit_schedule_name="visit_schedule",
-            schedule_name="schedule",
-            timepoint=Decimal("1.0"),
-        )
-        self.subject_visit_d3 = SubjectVisit.objects.create(
-            appointment=appointment,
-            report_datetime=appointment.appt_datetime,
-            visit_code_sequence=0,
-            visit_code="3000",
-            reason=SCHEDULED,
-            visit_schedule_name="visit_schedule",
-            schedule_name="schedule",
         )
 
     def test_pressure(self):
@@ -129,12 +149,12 @@ class TestLpFormValidator(TestCase):
         except ValidationError:
             self.fail("ValidationError unexpectedly raised")
 
+    @tag("2005")
     def test_qc_culture_requisition_not_required_if_no_result(self):
-        panel = Panel.objects.create(name=csf_panel.name)
+        panel = Panel.objects.get(name=csf_panel.name)
         requisition = SubjectRequisition.objects.create(
             subject_visit=self.subject_visit, panel=panel
         )
-        requisition.panel_object = csf_panel
         cleaned_data = {
             "subject_visit": self.subject_visit,
             "qc_requisition": requisition,
@@ -148,12 +168,10 @@ class TestLpFormValidator(TestCase):
             str(form_validator._errors.get("qc_requisition")),
         )
 
+    @tag("2005")
     def test_qc_assay_datetime_not_required_if_no_result(self):
-        panel = Panel.objects.create(name=csf_panel.name)
-        requisition = SubjectRequisition.objects.create(
-            subject_visit=self.subject_visit, panel=panel
-        )
-        requisition.panel_object = csf_panel
+        panel = Panel.objects.get(name=csf_panel.name)
+        SubjectRequisition.objects.create(subject_visit=self.subject_visit, panel=panel)
         cleaned_data = {
             "subject_visit": self.subject_visit,
             "qc_requisition": None,
@@ -183,11 +201,10 @@ class TestLpFormValidator(TestCase):
 
     def test_qc_assay_datetime_required_if_value(self):
         """Requisition is required if there is a value."""
-        panel = Panel.objects.create(name=csf_panel.name)
+        panel = Panel.objects.get(name=csf_panel.name)
         requisition = SubjectRequisition.objects.create(
             subject_visit=self.subject_visit, panel=panel
         )
-        requisition.panel_object = csf_panel
         cleaned_data = {
             "subject_visit": self.subject_visit,
             "qc_requisition": requisition,

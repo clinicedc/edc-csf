@@ -6,6 +6,8 @@ from edc_model.validators import datetime_not_future
 
 from ..choices import LP_REASON
 
+__all__ = ["LpModelMixin"]
+
 
 class LpModelMixin(models.Model):
     lp_datetime = models.DateTimeField(

@@ -1,4 +1,0 @@
-[run]
-include = edc_csf/*
-omit = edc_csf/tests/*,edc_csf/migrations/*
-branch = 1

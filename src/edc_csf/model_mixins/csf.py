@@ -8,6 +8,8 @@ from edc_constants.choices import (
 )
 from edc_constants.constants import AWAITING_RESULTS, NOT_APPLICABLE
 
+__all__ = ["CsfModelMixin"]
+
 
 class CsfModelMixin(models.Model):
     csf_positive = models.CharField(
