@@ -1,6 +1,8 @@
 from django.db import models
 from edc_constants.choices import NOT_APPLICABLE, POS_NEG_NA, YES_NO_NA
 
+__all__ = ["BiosynexSemiQuantitativeCragMixin"]
+
 
 class BiosynexSemiQuantitativeCragMixin(models.Model):
     bios_crag = models.CharField(

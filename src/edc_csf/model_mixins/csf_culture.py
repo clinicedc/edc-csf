@@ -16,6 +16,8 @@ from edc_reportable import (
 
 from ..choices import MG_MMOL_UNITS, MM3_PERC_UNITS
 
+__all__ = ["CsfCultureModelMixin"]
+
 
 class CsfCultureModelMixin(models.Model):
     """Add requisition fields if needed, for example:

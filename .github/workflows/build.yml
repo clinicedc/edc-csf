@@ -68,12 +68,9 @@ jobs:
         run: |
           uv tool install tox --with tox-uv
 
-      - name: Verify tox plugins
-        run: uv run --active --group test --no-sources tox --version
-
       - name: Tox tests
         run: |
-          uv run --active --group test --no-sources tox
+          uv run --group test --no-sources tox
         env:
           DJANGO: ${{ matrix.django-version }}
 
