@@ -11,5 +11,5 @@ for model_cls in app_config.get_models():
         codenames.append(f"{app_config.name}.view_{model_cls._meta.model_name}")
     else:
         for prefix in ["add", "change", "view", "delete"]:
-            codenames.append(f"{app_config.name}.{prefix}_{model_cls._meta.model_name}")
+            codenames.append(f"{app_config.name}.{prefix}_{model_cls._meta.model_name}")  # noqa: PERF401
 codenames.sort()

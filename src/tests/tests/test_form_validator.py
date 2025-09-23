@@ -6,6 +6,7 @@ from clinicedc_tests.sites import all_sites
 from clinicedc_tests.visit_schedules.visit_schedule import get_visit_schedule
 from django.core.exceptions import ValidationError
 from django.test import TestCase, override_settings, tag
+from django.utils import timezone
 from edc_appointment.models import Appointment
 from edc_consent import site_consents
 from edc_constants.constants import NO, NOT_DONE, YES
@@ -15,7 +16,6 @@ from edc_lab.models import Panel
 from edc_lab_panel.panels import fbc_panel, lft_panel, rft_panel, vl_panel
 from edc_sites.site import sites as site_sites
 from edc_sites.utils import add_or_update_django_sites
-from edc_utils import get_utcnow
 from edc_visit_schedule.constants import DAY01
 from edc_visit_schedule.site_visit_schedules import site_visit_schedules
 from edc_visit_schedule.visit import Requisition, RequisitionCollection
@@ -29,7 +29,6 @@ from edc_csf.panels import csf_panel
 
 @override_settings(SITE_ID=10)
 class TestLpFormValidator(TestCase):
-
     @classmethod
     def setUpTestData(cls):
         import_holidays()
@@ -158,7 +157,7 @@ class TestLpFormValidator(TestCase):
         cleaned_data = {
             "subject_visit": self.subject_visit,
             "qc_requisition": requisition,
-            "qc_assay_datetime": get_utcnow(),
+            "qc_assay_datetime": timezone.now(),
             "quantitative_culture": None,
         }
         form_validator = LpCsfFormValidator(cleaned_data=cleaned_data, instance=LpCsf())
@@ -175,7 +174,7 @@ class TestLpFormValidator(TestCase):
         cleaned_data = {
             "subject_visit": self.subject_visit,
             "qc_requisition": None,
-            "qc_assay_datetime": get_utcnow(),
+            "qc_assay_datetime": timezone.now(),
             "quantitative_culture": None,
         }
         form_validator = LpCsfFormValidator(cleaned_data=cleaned_data, instance=LpCsf())
@@ -259,9 +258,7 @@ class TestLpFormValidator(TestCase):
             try:
                 form_validator.validate()
             except ValidationError:
-                self.fail(
-                    f"ValidationError unexpectedly raised. " f"Got {form_validator._errors}"
-                )
+                self.fail(f"ValidationError unexpectedly raised. Got {form_validator._errors}")
 
     def test_csf_crag_not_done_csf_crag_lfa_not_required(self):
         cleaned_data = {

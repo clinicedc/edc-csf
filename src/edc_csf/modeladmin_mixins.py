@@ -16,7 +16,7 @@ class LpCsfModelAdminMixin:
         audit_fieldset_tuple,
     )
 
-    radio_fields = {
+    radio_fields = {  # noqa: RUF012
         "reason_for_lp": admin.VERTICAL,
         "csf_culture": admin.VERTICAL,
         "india_ink": admin.VERTICAL,

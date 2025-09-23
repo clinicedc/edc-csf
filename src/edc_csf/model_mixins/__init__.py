@@ -6,7 +6,7 @@ from .quantitative_culture import QuantitativeCultureModelMixin
 
 __all__ = [
     "BiosynexSemiQuantitativeCragMixin",
-    "CsfModelMixin",
     "CsfCultureModelMixin",
+    "CsfModelMixin",
     "QuantitativeCultureModelMixin",
 ]

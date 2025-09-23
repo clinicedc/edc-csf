@@ -12,11 +12,11 @@ import django_audit_fields.models.audit_model_mixin
 import django_revision.revision_field
 import edc_model.validators.date
 import edc_sites.models
-import edc_utils.date
 import edc_visit_tracking.managers
 import simple_history.models
 from django.conf import settings
 from django.db import migrations, models
+import django.utils.timezone
 
 
 class Migration(migrations.Migration):
@@ -44,15 +44,11 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "created",
-                    models.DateTimeField(
-                        blank=True, default=django_audit_fields.models.audit_model_mixin.utcnow
-                    ),
+                    models.DateTimeField(blank=True, default=django.utils.timezone),
                 ),
                 (
                     "modified",
-                    models.DateTimeField(
-                        blank=True, default=django_audit_fields.models.audit_model_mixin.utcnow
-                    ),
+                    models.DateTimeField(blank=True, default=django.utils.timezone),
                 ),
                 (
                     "user_created",
@@ -375,7 +371,7 @@ class Migration(migrations.Migration):
                         verbose_name="CSF amount removed ",
                     ),
                 ),
-                ("report_datetime", models.DateTimeField(default=edc_utils.date.get_utcnow)),
+                ("report_datetime", models.DateTimeField(default=django.utils.timezone.now)),
                 (
                     "site",
                     models.ForeignKey(
@@ -416,15 +412,11 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "created",
-                    models.DateTimeField(
-                        blank=True, default=django_audit_fields.models.audit_model_mixin.utcnow
-                    ),
+                    models.DateTimeField(blank=True, default=django.utils.timezone),
                 ),
                 (
                     "modified",
-                    models.DateTimeField(
-                        blank=True, default=django_audit_fields.models.audit_model_mixin.utcnow
-                    ),
+                    models.DateTimeField(blank=True, default=django.utils.timezone),
                 ),
                 (
                     "user_created",
@@ -746,7 +738,7 @@ class Migration(migrations.Migration):
                         verbose_name="CSF amount removed ",
                     ),
                 ),
-                ("report_datetime", models.DateTimeField(default=edc_utils.date.get_utcnow)),
+                ("report_datetime", models.DateTimeField(default=django.utils.timezone.now)),
                 (
                     "history_id",
                     models.UUIDField(

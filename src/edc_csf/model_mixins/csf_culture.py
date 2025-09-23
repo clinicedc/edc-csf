@@ -5,7 +5,7 @@ from edc_constants.choices import (
     YES_NO_NA,
     YES_NO_NOT_DONE_AWAITING_RESULTS_NA,
 )
-from edc_constants.constants import AWAITING_RESULTS, NOT_APPLICABLE
+from edc_constants.constants import AWAITING_RESULTS, NOT_APPLICABLE, NULL_STRING
 from edc_model.validators import datetime_not_future
 from edc_reportable import (
     GRAMS_PER_LITER,
@@ -48,7 +48,10 @@ class CsfCultureModelMixin(models.Model):
     )
 
     other_csf_culture = models.CharField(
-        verbose_name="If YES, specify organism:", max_length=75, blank=True, null=True
+        verbose_name="If YES, specify organism:",
+        max_length=75,
+        blank=True,
+        default=NULL_STRING,
     )
 
     csf_wbc_cell_count = models.IntegerField(
@@ -68,7 +71,7 @@ class CsfCultureModelMixin(models.Model):
     )
 
     differential_lymphocyte_unit = models.CharField(
-        choices=MM3_PERC_UNITS, max_length=6, null=True, blank=True
+        choices=MM3_PERC_UNITS, max_length=6, default=NULL_STRING, blank=True
     )
 
     differential_neutrophil_count = models.IntegerField(
@@ -80,7 +83,7 @@ class CsfCultureModelMixin(models.Model):
     )
 
     differential_neutrophil_unit = models.CharField(
-        choices=MM3_PERC_UNITS, max_length=6, null=True, blank=True
+        choices=MM3_PERC_UNITS, max_length=6, default=NULL_STRING, blank=True
     )
 
     csf_glucose = models.DecimalField(
@@ -97,7 +100,7 @@ class CsfCultureModelMixin(models.Model):
         max_length=6,
         choices=MG_MMOL_UNITS,
         blank=True,
-        null=True,
+        default=NULL_STRING,
     )
 
     csf_protein = models.DecimalField(
@@ -110,7 +113,11 @@ class CsfCultureModelMixin(models.Model):
     )
 
     csf_crag = models.CharField(
-        verbose_name="CSF CrAg:", max_length=15, choices=POS_NEG, blank=True, null=True
+        verbose_name="CSF CrAg:",
+        max_length=15,
+        choices=POS_NEG,
+        blank=True,
+        default=NULL_STRING,
     )
 
     csf_crag_immy_lfa = models.CharField(
