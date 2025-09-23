@@ -1,9 +1,9 @@
 from django.db import models
+from django.utils import timezone
 from edc_identifier.model_mixins import UniqueSubjectIdentifierFieldMixin
 from edc_model.models import BaseUuidModel, HistoricalRecords
 from edc_sites.managers import CurrentSiteManager
 from edc_sites.model_mixins import SiteModelMixin
-from edc_utils import get_utcnow
 from edc_visit_tracking.managers import CrfModelManager
 
 from .model_mixins import (
@@ -25,7 +25,7 @@ class LpCsf(
     SiteModelMixin,
     BaseUuidModel,
 ):
-    report_datetime = models.DateTimeField(default=get_utcnow)
+    report_datetime = models.DateTimeField(default=timezone.now)
 
     objects = CrfModelManager()
 

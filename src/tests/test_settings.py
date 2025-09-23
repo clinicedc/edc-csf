@@ -18,7 +18,7 @@ project_settings = DefaultTestSettings(
         "edc_consent.E001",
     ],  # The SITE_ID setting must be an integer
     INSTALLED_APPS=[
-        *get_installed_apps_for_tests(["edc_csf.apps.AppConfig"]),
+        *get_installed_apps_for_tests("clinicedc_tests", "edc_csf.apps.AppConfig"),
     ],
     add_dashboard_middleware=True,
     add_lab_dashboard_middleware=True,

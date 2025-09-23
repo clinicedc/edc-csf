@@ -9,7 +9,7 @@ namespace = false
 
 [project]
 name = "edc-csf"
-version = "1.1.0"
+version = "1.1.2"
 description = "Classes for CSF/LP in clinicedc/edc projects"
 readme = {file = "README.rst", content-type = "text/x-rst"}
 license = "GPL-3.0-or-later"
@@ -46,15 +46,56 @@ dependencies = [
 [project.urls]
 Homepage = "https://github.com/clinicedc/edc-csf"
 
-[tool.black]
+[tool.ruff]
 line-length = 95
-target-version = ["py312"]
-extend-exclude = '''^(.*\/)*\b(migrations|\.venv)\b($|\/.*$)'''
+indent-width = 4
+target-version = "py312"
+exclude = ["migrations", ".tox", ".venv"]
 
-[tool.isort]
-profile = "black"
-py_version = "312"
-skip = [".tox", ".eggs", "migrations", "_version.py", ".venv"]
+[tool.ruff.lint]
+select = [
+    "A",
+    "ARG",
+    "B",
+    "C90",
+    "COM",
+    "DJ",
+    "DTZ",
+    "E",
+    "F",
+    "FA",
+    "FURB",
+    "I",
+    "INT",
+    "N",
+    "PD",
+    "PERF",
+    "PL",
+    "PLR",
+    "PTH",
+    "RET",
+    "RUF",
+    "S",
+    "SIM",
+    "T20",
+    "TRY",
+    "UP",
+    "W",
+    # "FIX",
+]
+ignore = ["DJ008", "DJ007", "DJ006", "COM812", "PLC0206", "PLR2004", "TRY003"]
+
+[tool.ruff.lint.per-file-ignores]
+    "__init__.py" = ["F401"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 12
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
 
 [tool.coverage.run]
 parallel = false
@@ -67,7 +108,7 @@ source = ["edc_csf"]
 [tool.coverage.report]
 show_missing = true
 skip_covered = true
-omit = ["requirements.txt"]
+omit = ["requirements.txt", "*/migrations/*"]
 exclude_lines = [
   "pragma: no cover",
   "if TYPE_CHECKING:",
@@ -75,10 +116,6 @@ exclude_lines = [
 
 [dependency-groups]
 lint = [
-    "black>=25.1.0",
-    "deptry>=0.23.0",
-    "flake8>=7.3.0",
-    "isort>=6.0.1",
     "ruff>=0.12.5",
 ]
 
@@ -96,27 +133,12 @@ test = [
     "model-bakery>=1.20.5",
     "time-machine>=2.16.0",
     "tqdm>=4.67.1",
-    "django-admin-rangefilter>=0.13.3",
-    "django-crypto-fields>=1.0.1",
-    "django-logentry-admin>=1.1.0",
-    "django-multisite2>=2.1.0",
-    "django-pandas>=0.6.7",
-    "django-revision>=1.0.0",
-    "django-simple-history>=3.10.1",
-    "django-webtest>=1.9.13",
-    "django-db-views>=0.1.11",
     "edc-test-settings>=2.0.0",
     "clinicedc-tests>=0.1.2",
 ]
 
 [tool.uv.sources]
 edc-csf = { workspace = true }
+clinicedc = { path = "../clinicedc", editable = true }
 clinicedc-tests = { path = "../clinicedc-tests", editable = true }
-clinicedc = { path = "../clinicedc/clinicedc", editable = true }
-django-audit-fields = { path = "../django-audit-fields", editable = true }
-django-crypto-fields = { path = "../django-crypto-fields", editable = true }
-django-revision = { path = "../django-revision", editable = true }
-django-multisite2 = { path = "../django-multisite2", editable = true }
-edc-glucose = { path = "../edc-glucose", editable = true }
 edc-test-settings = { path = "../edc-test-settings", editable = true }
-edc-test-utils = { path = "../edc-test-utils", editable = true }

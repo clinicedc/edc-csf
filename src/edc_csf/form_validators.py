@@ -10,9 +10,12 @@ from .panels import csf_chemistry_panel, csf_panel
 
 
 def validate_percentage(cleaned_data: dict, field: str, unit: str):
-    if cleaned_data.get(field):
-        if cleaned_data.get(unit) == "%" and cleaned_data.get(field) > 100:
-            raise forms.ValidationError({field: "Cannot be greater than 100%."})
+    if (
+        cleaned_data.get(field)
+        and cleaned_data.get(unit) == "%"
+        and cleaned_data.get(field) > 100
+    ):
+        raise forms.ValidationError({field: "Cannot be greater than 100%."})
 
 
 class LpFormValidatorMixin:
@@ -74,14 +77,12 @@ class CsfCultureFormValidatorMixin:
         if (
             self.cleaned_data.get("subject_visit").visit_code == DAY1
             and self.cleaned_data.get("subject_visit").visit_code_sequence == 0
+            and self.cleaned_data.get("csf_crag") == NOT_DONE
+            and self.cleaned_data.get("india_ink") == NOT_DONE
         ):
-            if (
-                self.cleaned_data.get("csf_crag") == NOT_DONE
-                and self.cleaned_data.get("india_ink") == NOT_DONE
-            ):
-                error_msg = 'CSF CrAg and India Ink cannot both be "not done".'
-                message = {"csf_crag": error_msg, "india_ink": error_msg}
-                raise forms.ValidationError(message, code=REQUIRED_ERROR)
+            error_msg = 'CSF CrAg and India Ink cannot both be "not done".'
+            message = {"csf_crag": error_msg, "india_ink": error_msg}
+            raise forms.ValidationError(message, code=REQUIRED_ERROR)
 
 
 class QuantitativeCsfFormValidatorMixin:
@@ -112,10 +113,10 @@ class LpCsfFormValidatorMixin(
     QuantitativeCsfFormValidatorMixin,
     CsfCultureFormValidatorMixin,
 ):
-    requisition_fields = [
+    requisition_fields = (  # ???
         ("qc_requisition", "qc_assay_datetime"),
         ("csf_requisition", "csf_assay_datetime"),
-    ]
+    )
 
     def clean(self):
         self.validate_lp()
