@@ -1,7 +1,7 @@
 from typing import Any
 
+from clinicedc_constants import NOT_DONE, YES
 from django import forms
-from edc_constants.constants import NOT_DONE, YES
 from edc_form_validators import REQUIRED_ERROR, FormValidator
 from edc_lab.form_validators import CrfRequisitionFormValidatorMixin
 from edc_visit_schedule.constants import DAY1

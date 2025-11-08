@@ -1,3 +1,4 @@
+from clinicedc_constants import AWAITING_RESULTS, NOT_APPLICABLE
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from edc_constants.choices import (
@@ -6,7 +7,6 @@ from edc_constants.choices import (
     YES_NO_AWAITING_RESULTS,
     YES_NO_NA,
 )
-from edc_constants.constants import AWAITING_RESULTS, NOT_APPLICABLE
 
 __all__ = ["CsfModelMixin"]
 

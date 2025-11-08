@@ -1,3 +1,4 @@
+from clinicedc_constants import NO, NOT_DONE, YES
 from clinicedc_tests.consents import consent_v1
 from clinicedc_tests.helper import Helper
 from clinicedc_tests.labs import lab_profile
@@ -9,7 +10,6 @@ from django.test import TestCase, override_settings, tag
 from django.utils import timezone
 from edc_appointment.models import Appointment
 from edc_consent import site_consents
-from edc_constants.constants import NO, NOT_DONE, YES
 from edc_facility.import_holidays import import_holidays
 from edc_lab import site_labs
 from edc_lab.models import Panel
