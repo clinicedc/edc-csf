@@ -1,3 +1,11 @@
+from clinicedc_constants import (
+    AWAITING_RESULTS,
+    GRAMS_PER_LITER,
+    MILLIGRAMS_PER_DECILITER,
+    MILLIMOLES_PER_LITER,
+    NOT_APPLICABLE,
+    NULL_STRING,
+)
 from django.core.validators import MinValueValidator
 from django.db import models
 from edc_constants.choices import (
@@ -5,14 +13,8 @@ from edc_constants.choices import (
     YES_NO_NA,
     YES_NO_NOT_DONE_AWAITING_RESULTS_NA,
 )
-from edc_constants.constants import AWAITING_RESULTS, NOT_APPLICABLE, NULL_STRING
 from edc_model.validators import datetime_not_future
-from edc_reportable import (
-    GRAMS_PER_LITER,
-    MILLIGRAMS_PER_DECILITER,
-    MILLIMOLES_PER_LITER,
-    MM3_DISPLAY,
-)
+from edc_reportable.units import MM3_DISPLAY
 
 from ..choices import MG_MMOL_UNITS, MM3_PERC_UNITS
 

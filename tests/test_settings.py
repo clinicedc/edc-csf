@@ -15,8 +15,10 @@ project_settings = DefaultTestSettings(
         "edc_sites.E001",
         "edc_sites.E002",
         "edc_navbar.E003",
+        "edc_navbar.E004",
         "edc_consent.E001",
     ],  # The SITE_ID setting must be an integer
+    DJANGO_REVISION_IGNORE_WORKING_DIR=True,
     INSTALLED_APPS=[
         *get_installed_apps_for_tests("clinicedc_tests", "edc_csf.apps.AppConfig"),
     ],
