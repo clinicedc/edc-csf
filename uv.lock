@@ -580,7 +580,7 @@ wheels = [
 
 [[package]]
 name = "clinicedc"
-version = "2.9.4"
+version = "3.0.0"
 source = { editable = "../clinicedc" }
 dependencies = [
     { name = "argon2-cffi" },
@@ -713,31 +713,31 @@ source = { editable = "../clinicedc-constants" }
 
 [[package]]
 name = "clinicedc-tests"
-version = "1.2.0"
+version = "1.2.2"
 source = { editable = "../clinicedc-tests" }
 dependencies = [
-    { name = "clinicedc" },
+    { name = "coverage" },
     { name = "django-mock-queries" },
     { name = "faker" },
     { name = "model-bakery" },
     { name = "time-machine" },
+    { name = "tox" },
+    { name = "tox-uv" },
 ]
 
 [package.metadata]
 requires-dist = [
-    { name = "clinicedc", specifier = ">=2.9.4,<3" },
+    { name = "coverage", specifier = ">=7.13.5" },
     { name = "django-mock-queries", specifier = ">=2.3.0" },
     { name = "faker", specifier = ">=37.4.2" },
     { name = "model-bakery", specifier = ">=1.20.5" },
     { name = "time-machine", specifier = ">=2.16.0" },
-]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "coverage", specifier = ">=7.10.1" },
     { name = "tox", specifier = ">=4.32.0" },
     { name = "tox-uv", specifier = ">=1.26.2" },
 ]
+
+[package.metadata.requires-dev]
+dev = []
 docs = [
     { name = "furo", specifier = ">=2025.7.19" },
     { name = "sphinx", specifier = ">=8.2.3" },
@@ -1194,13 +1194,16 @@ wheels = [
 
 [[package]]
 name = "edc-csf"
-version = "1.4.0"
+version = "2.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "clinicedc" },
 ]
 
 [package.dev-dependencies]
+dev = [
+    { name = "clinicedc-tests" },
+]
 docs = [
     { name = "furo" },
     { name = "sphinx" },
@@ -1210,21 +1213,12 @@ docs = [
 lint = [
     { name = "ruff" },
 ]
-test = [
-    { name = "clinicedc-tests" },
-    { name = "coverage" },
-    { name = "edc-test-settings" },
-    { name = "faker" },
-    { name = "model-bakery" },
-    { name = "time-machine" },
-    { name = "tox-uv" },
-    { name = "tqdm" },
-]
 
 [package.metadata]
 requires-dist = [{ name = "clinicedc", editable = "../clinicedc" }]
 
 [package.metadata.requires-dev]
+dev = [{ name = "clinicedc-tests", editable = "../clinicedc-tests" }]
 docs = [
     { name = "furo", specifier = ">=2025.7.19" },
     { name = "sphinx", specifier = ">=8.2.3" },
@@ -1232,47 +1226,6 @@ docs = [
     { name = "sphinx-inline-tabs", specifier = ">=2023.4.21" },
 ]
 lint = [{ name = "ruff", specifier = ">=0.12.5" }]
-test = [
-    { name = "clinicedc-tests", editable = "../clinicedc-tests" },
-    { name = "coverage", specifier = ">=7.10.1" },
-    { name = "edc-test-settings", editable = "../edc-test-settings" },
-    { name = "faker", specifier = ">=37.4.2" },
-    { name = "model-bakery", specifier = ">=1.20.5" },
-    { name = "time-machine", specifier = ">=2.16.0" },
-    { name = "tox-uv", specifier = ">=1.26.2" },
-    { name = "tqdm", specifier = ">=4.67.1" },
-]
-
-[[package]]
-name = "edc-test-settings"
-version = "2.1.0"
-source = { editable = "../edc-test-settings" }
-dependencies = [
-    { name = "python-dateutil" },
-]
-
-[package.metadata]
-requires-dist = [{ name = "python-dateutil", specifier = ">=2.9.0.post0" }]
-
-[package.metadata.requires-dev]
-docs = [
-    { name = "furo", specifier = ">=2025.7.19" },
-    { name = "sphinx", specifier = ">=8.2.3" },
-    { name = "sphinx-design", specifier = ">=0.6.1" },
-    { name = "sphinx-inline-tabs", specifier = ">=2023.4.21" },
-]
-lint = [
-    { name = "black", specifier = ">=25.1.0" },
-    { name = "deptry", specifier = ">=0.23.0" },
-    { name = "flake8", specifier = ">=7.3.0" },
-    { name = "isort", specifier = ">=6.0.1" },
-    { name = "ruff", specifier = ">=0.12.5" },
-]
-test = [
-    { name = "coverage", specifier = ">=7.10.1" },
-    { name = "django", specifier = ">=5.2.5" },
-    { name = "tox-uv", specifier = ">=1.26.2" },
-]
 
 [[package]]
 name = "faker"
