@@ -37,7 +37,7 @@ dependencies = ["clinicedc>=3.0.0"]
 Homepage = "https://github.com/clinicedc/edc-csf"
 
 [build-system]
-requires = ["uv_build>=0.9.0"]
+requires = ["uv_build>=0.10.0,<0.12.0"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
